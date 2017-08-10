@@ -338,7 +338,7 @@ classdef skeleton < handle
 		end % end parseXML
 
 		function [C,n_comp] = findComponents(s)
-						% check that there is only one component
+			% check that there is only one component
 			G = graph(s.A);
 			C = conncomp(G);
 
