@@ -63,17 +63,17 @@ classdef skeleton < handle
 				for j = 1:length(s)
 					H{j} = s(j).hash;
 				end
-				h = dataHash(H);
+				h = hashlib.md5hash(H);
 			else
 				P = properties(s);
 				V = cell(length(P),1);
 				for i = 1:length(P)
 					try
-						V{i} = dataHash(s.(P{i}));
+						V{i} = hashlib.md5hash(s.(P{i}));
 					catch
 					end
 				end
-				h = dataHash(V);
+				h = hashlib.md5hash(V);
 			end
 		end
 
@@ -198,7 +198,7 @@ classdef skeleton < handle
 				end
 			end
 			if ~being_published
-				cprintf('green','[INFO] ')
+				corelib.cprintf('green','[INFO] ')
 	            fprintf('Tracing processes...\n')
 	
 			end
@@ -222,7 +222,7 @@ classdef skeleton < handle
 					
 					% check to make sure this node wasn't encountered before
 					if length(this_path(1:c-1)) ~= length(unique(this_path(1:c-1)))
-						cprintf('red','[WARN] ')
+						corelib.cprintf('red','[WARN] ')
 	            		fprintf('Loop detected! Aborting this process...\n')
 	            		c = c - 1;
 	            		this_node = [];
@@ -236,7 +236,7 @@ classdef skeleton < handle
 
 
 		function parseXML(s,path_name)
-			lines = lineRead(path_name);
+			lines = filelib.read(path_name);
 			n_nodes = sum(~cellfun(@isempty,(cellfun(@(x) strfind(x,'node id'),lines,'UniformOutput',false))));
 			% make arrays
 			x = NaN(1,n_nodes);
@@ -322,10 +322,10 @@ classdef skeleton < handle
 			end
 			if ~being_published
 				if n_comp == 1
-					cprintf('green','[INFO] ')
+					corelib.cprintf('green','[INFO] ')
 	                fprintf('Only one connected component!\n')
 				else
-					cprintf('red','[WARN] ')
+					corelib.cprintf('red','[WARN] ')
 	                fprintf('More than one connected component!\n')
 				end
 			end
